@@ -1,0 +1,319 @@
+/* public/css/style.css */
+
+/* 1. RESET & BASIC */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  /* Font Serif (Times New Roman/Cambria) agar terlihat resmi */
+  font-family: "Cambria", "Times New Roman", serif;
+
+  /* Background Hijau Gradasi (Gelap ke Terang) */
+  background: linear-gradient(135deg, #002200 0%, #004d26 100%);
+
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Posisi tengah secara horizontal */
+  color: #333;
+}
+
+/* 2. WRAPPER UTAMA (Membungkus Header & Form) */
+.main-wrapper {
+  width: 100%;
+  max-width: 500px; /* Lebar maksimal konten */
+  margin-top: 20px;
+}
+
+/* 3. KARTU HEADER (Bagian Logo & Judul) */
+.header-card {
+  background-color: white;
+  padding: 25px 20px;
+  border-radius: 15px; /* Sudut membulat */
+  text-align: center;
+  margin-bottom: 25px; /* Jarak antara header dan form */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.logo {
+  width: 160px; /* Ukuran Logo */
+  height: auto;
+  margin-bottom: -15px;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 5px 0;
+  text-transform: uppercase;
+  line-height: 1.4;
+  color: #000;
+}
+
+.header-subtitle {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 8px;
+  color: #333;
+}
+
+.form-card {
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative; /* Penting untuk posisi watermark */
+  overflow: hidden;
+}
+
+/* Watermark Logo Transparan di Background Form */
+.form-card::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 130%;
+  height: 130%;
+  background-image: url("../image/logo.png");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.1; /* Sangat transparan */
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* Pastikan input form berada di atas watermark */
+form {
+  position: relative;
+  z-index: 1;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #000;
+}
+
+/* 5. STYLING INPUT FIELDS */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #888; /* Border abu agak gelap */
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 15px;
+  background-color: rgba(255, 255, 255, 0.9); /* Sedikit transparan */
+  transition: all 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: #004d26; /* Hijau saat diklik */
+  box-shadow: 0 0 5px rgba(0, 77, 38, 0.3);
+}
+
+/* 6. RADIO BUTTON (Disusun Vertikal sesuai gambar) */
+.radio-group {
+  display: flex;
+  flex-direction: column; /* Ke bawah */
+  gap: 10px;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+}
+
+.radio-option input {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.radio-option label {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* 7. TOMBOL KIRIM */
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 25px;
+  /* Gradasi Hijau */
+  background: linear-gradient(to bottom, #004d26, #002b15);
+  color: white;
+  font-family: "Cambria", serif;
+  font-size: 18px;
+  font-weight: bold;
+  border: none;
+  border-radius: 30px; /* Sangat bulat (Pill shape) */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.2s,
+    filter 0.2s;
+}
+
+button:hover {
+  filter: brightness(1.15); /* Lebih terang saat hover */
+}
+
+button:active {
+  transform: scale(0.98); /* Efek tekan */
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+#message {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* 8. RESPONSIVE (HP) */
+@media (max-width: 480px) {
+  body {
+    padding: 10px;
+  }
+  .header-card,
+  .form-card {
+    padding: 20px;
+  }
+  .header-title {
+    font-size: 16px;
+  }
+}
+
+/* --- TAMBAHAN UNTUK HALAMAN DEPAN (LANDING PAGE) --- */
+
+/* Override body khusus untuk halaman depan agar backgroundnya putih/biru muda */
+body.landing-page {
+  background: #f0fbf4; /* Warna background halaman terang */
+  display: block; /* Reset display flex dari settingan lama */
+}
+
+/* Header Kiri Atas */
+.top-header {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.top-header img {
+  width: 70px;
+  height: auto;
+  margin-right: 15px;
+}
+
+.top-header .header-text {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 1.2;
+  color: #000;
+  text-transform: uppercase;
+}
+
+/* Wrapper Tengah */
+.welcome-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh; /* Agar posisi di tengah layar */
+  padding: 20px;
+}
+
+/* Kartu Hijau Besar */
+.welcome-card {
+  background: linear-gradient(135deg, #002200 0%, #004d26 100%);
+  width: 100%;
+  max-width: 600px;
+  border-radius: 15px;
+  padding: 30px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  margin-bottom: 30px;
+}
+
+.welcome-title {
+  font-family: "Cambria", serif;
+  font-size: 24px;
+  margin-bottom: 20px;
+  line-height: 1.4;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.welcome-title .small-text {
+  font-size: 16px;
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Kotak Putih di Dalam Kartu */
+.white-box {
+  background-color: white;
+  border-radius: 10px;
+  padding: 20px;
+  color: #333;
+  font-family: sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.white-box p {
+  margin-bottom: 10px;
+}
+
+.white-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tombol Mulai */
+.btn-start {
+  background: linear-gradient(to bottom, #004d26, #002b15);
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-family: "Cambria", serif;
+  padding: 15px 40px;
+  border-radius: 30px;
+  font-size: 18px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+  display: inline-block;
+}
+
+.btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-start:active {
+  transform: scale(0.98);
+}

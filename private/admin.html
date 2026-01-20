@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <style>
+      /* CSS Tambahan Khusus Tabel Admin */
+      .admin-container {
+        width: 95%;
+        max-width: 1000px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        overflow-x: auto; /* Agar tabel bisa discroll di HP */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+        font-size: 14px;
+      }
+      th {
+        background-color: #004d26;
+        color: white;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      .logout-btn {
+        background-color: #c0392b;
+        padding: 8px 15px;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 14px;
+        float: right;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="top-header"
+      style="
+        background: white;
+        width: 100%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      "
+    >
+      <img src="image/logo.png" alt="Logo" />
+      <div class="header-text">ADMIN PANEL<br />BUKU TAMU</div>
+      <div style="margin-left: auto">
+        <a href="#" onclick="logout()" class="logout-btn">Keluar</a>
+      </div>
+    </div>
+
+    <div class="admin-container">
+      <h2 style="color: #004d26">Data Kunjungan Tamu</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Tanggal</th>
+            <th>Nama</th>
+            <th>Instansi/Alamat</th>
+            <th>No HP</th>
+            <th>Tujuan</th>
+            <th>Keperluan</th>
+          </tr>
+        </thead>
+        <tbody id="tabelData"></tbody>
+      </table>
+    </div>
+
+    <script>
+      // 1. Cek Login
+      if (localStorage.getItem("isAdminLoggedIn") !== "true") {
+        alert("Anda harus login terlebih dahulu!");
+        // UBAH BARIS INI:
+        window.location.href = "/masuk-admin";
+      }
+
+      // 2. Fungsi Logout
+      function logout() {
+        localStorage.removeItem("isAdminLoggedIn");
+        window.location.href = "/masuk-admin";
+      }
+
+      // 3. AMBIL DATA DARI SERVER
+      fetch("/api/tamu")
+        .then((response) => response.json())
+        .then((data) => {
+          const tabel = document.getElementById("tabelData");
+          let html = "";
+
+          if (data.length === 0) {
+            tabel.innerHTML =
+              '<tr><td colspan="7" style="text-align:center;">Belum ada data tamu.</td></tr>';
+            return;
+          }
+
+          data.forEach((tamu, index) => {
+            // Format Tanggal agar cantik
+            const date = new Date(tamu.waktu_kunjungan).toLocaleString("id-ID");
+
+            html += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${date}</td>
+                            <td>${tamu.nama}</td>
+                            <td>${tamu.alamat}</td>
+                            <td>${tamu.no_hp || "-"}</td>
+                            <td>${tamu.tujuan_keperluan}</td>
+                            <td>${tamu.uraian_keperluan}</td>
+                        </tr>
+                    `;
+          });
+
+          tabel.innerHTML = html;
+        })
+        .catch((err) => console.error(err));
+    </script>
+  </body>
+</html>

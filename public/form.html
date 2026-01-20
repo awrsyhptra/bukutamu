@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Buku Tamu Kemenag Siak</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-card">
+        <img src="image/logo.png" alt="Logo Kemenag" class="logo" />
+
+        <div class="header-title">
+          BUKU TAMU KANTOR KEMENTERIAN<br />
+          AGAMA KABUPATEN SIAK
+        </div>
+        <div class="header-subtitle">
+          Silahkan isi formulir dibawah ini untuk mendaftar
+        </div>
+      </div>
+
+      <div class="form-card">
+        <form id="guestForm">
+          <div class="form-group">
+            <label for="nama">Nama lengkap</label>
+            <input type="text" id="nama" name="nama" required />
+          </div>
+
+          <div class="form-group">
+            <label for="alamat">Alamat lengkap</label>
+            <input type="text" id="alamat" name="alamat" required />
+          </div>
+
+          <div class="form-group">
+            <label>Jenis kelamin</label>
+            <div class="radio-group">
+              <div class="radio-option">
+                <input
+                  type="radio"
+                  id="jk_l"
+                  name="jenis_kelamin"
+                  value="Laki-laki"
+                />
+                <label for="jk_l">Laki - laki</label>
+              </div>
+              <div class="radio-option">
+                <input
+                  type="radio"
+                  id="jk_p"
+                  name="jenis_kelamin"
+                  value="Perempuan"
+                />
+                <label for="jk_p">Perempuan</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tujuan">Tujuan keperluan</label>
+            <select id="tujuan" name="tujuan" required>
+              <option value="">Pilih</option>
+              <option value="Bertemu Pimpinan">Bertemu Pimpinan</option>
+              <option value="Mengirim Dokumen">Mengirim Dokumen</option>
+              <option value="Konsultasi">Konsultasi</option>
+              <option value="Rapat">Rapat</option>
+              <option value="Lainnya">Lainnya</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="uraian">Uraian keperluan</label>
+            <textarea id="uraian" name="uraian" rows="3" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="nohp">No Hp/Wa</label>
+            <input type="text" id="nohp" name="nohp" required />
+          </div>
+
+          <button type="submit">Kirim</button>
+        </form>
+
+        <div id="message"></div>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("guestForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // 1. Efek UI Loading (Tombol berubah jadi "Mengirim...")
+          const btn = document.querySelector("button");
+          const originalText = btn.innerText;
+          btn.innerText = "Mengirim...";
+          btn.disabled = true;
+
+          // 2. Ambil data dari input form
+          const nama = document.getElementById("nama").value;
+          const alamat = document.getElementById("alamat").value;
+          const tujuan = document.getElementById("tujuan").value;
+          const uraian = document.getElementById("uraian").value;
+          const nohp = document.getElementById("nohp").value; // Data No HP diambil
+
+          // Ambil data Radio Button
+          const jkElement = document.querySelector(
+            'input[name="jenis_kelamin"]:checked',
+          );
+          const jenisKelamin = jkElement ? jkElement.value : null;
+
+          // Validasi Jenis Kelamin
+          if (!jenisKelamin) {
+            alert("Mohon pilih jenis kelamin.");
+            btn.innerText = originalText;
+            btn.disabled = false;
+            return;
+          }
+
+          // 3. Kirim data ke Server
+          fetch("/api/tamu", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nama: nama,
+              alamat: alamat,
+              jenis_kelamin: jenisKelamin,
+              tujuan: tujuan,
+              uraian: uraian,
+              no_hp: nohp, // Mengirim data No HP ke backend
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                throw new Error(data.error); // Tangkap error jika ada dari server
+              }
+
+              // --- UPDATE UTAMA: REDIRECT ---
+              // Jika berhasil, pindah ke halaman sukses
+              window.location.href = "sukses.html";
+              // ------------------------------
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              alert("Gagal mengirim data. Pastikan server berjalan.");
+
+              // Kembalikan tombol agar bisa ditekan lagi
+              btn.innerText = originalText;
+              btn.disabled = false;
+            });
+        });
+    </script>
+  </body>
+</html>

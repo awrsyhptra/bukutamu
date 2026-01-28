@@ -4,48 +4,149 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login Admin - Kemenag Siak</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
-  <body class="landing-page">
-    <div class="welcome-wrapper">
-      <div class="welcome-card" style="max-width: 400px">
-        <h2 class="welcome-title" style="margin-bottom: 20px">Login Admin</h2>
+  <body>
+    <div class="login-wrapper">
+      <div class="login-header-card">
+        <img src="/image/logo.png" alt="Logo Kemenag" class="logo" />
+        <h2>Kementerian Agama</h2>
+        <h3>Kabupaten Siak</h3>
+        <p>Sistem Buku Tamu Digital</p>
+      </div>
+
+      <div class="login-form-card">
+        <div class="login-title-text">Login Admin</div>
+        <div class="login-subtitle-text">
+          Silakan masuk dengan akun admin Anda
+        </div>
 
         <form id="loginForm">
-          <div class="form-group" style="text-align: left">
-            <label style="color: white">Username</label>
-            <input type="text" id="username" required style="padding: 10px" />
-          </div>
-          <div class="form-group" style="text-align: left">
-            <label style="color: white">Password</label>
-            <input
-              type="password"
-              id="password"
-              required
-              style="padding: 10px"
-            />
+          <div class="input-group">
+            <label>Username</label>
+            <div class="input-field-container">
+              <svg
+                class="input-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              <input
+                type="text"
+                id="username"
+                placeholder="Masukkan username"
+                required
+              />
+            </div>
           </div>
 
-          <button
-            type="submit"
-            class="btn-start"
-            style="width: 100%; border: none; cursor: pointer"
-          >
-            Masuk
-          </button>
+          <div class="input-group">
+            <label>Password</label>
+            <div class="input-field-container">
+              <svg
+                class="input-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                />
+              </svg>
+              <input
+                type="password"
+                id="password"
+                placeholder="Masukkan password"
+                required
+              />
+
+              <svg
+                id="eyeIcon"
+                class="password-toggle"
+                onclick="togglePassword()"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                />
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <!-- <div class="options-row">
+                    <label>
+                        <input type="checkbox"> Ingat saya
+                    </label>
+                    <a href="#" class="forgot-pass">Lupa password?</a>
+                </div> -->
+
+          <button type="submit" class="btn-login">Masuk</button>
         </form>
+
+        <div class="footer-text">
+          Sistem ini hanya untuk administrator resmi.<br />
+          Hubungi IT support jika mengalami kendala.
+        </div>
+
         <p
           id="errorMsg"
-          style="color: #ffcccc; margin-top: 10px; display: none"
+          style="
+            color: red;
+            font-size: 13px;
+            text-align: center;
+            display: none;
+            margin-top: 10px;
+          "
         ></p>
       </div>
+
+      <div class="copyright">&copy; 2026 Kementerian Agama Kabupaten Siak</div>
     </div>
 
     <script>
+      function togglePassword() {
+        const passInput = document.getElementById("password");
+        const eyeIcon = document.getElementById("eyeIcon");
+        if (passInput.type === "password") {
+          passInput.type = "text";
+          eyeIcon.style.color = "#00b050"; // Mata jadi hijau saat aktif
+        } else {
+          passInput.type = "password";
+          eyeIcon.style.color = "#999";
+        }
+      }
+
       document
         .getElementById("loginForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
+          const btn = document.querySelector(".btn-login");
+          const originalText = btn.innerText;
+          btn.innerText = "Memproses...";
+          btn.disabled = true;
 
           const user = document.getElementById("username").value;
           const pass = document.getElementById("password").value;
@@ -57,7 +158,6 @@
           })
             .then((res) => res.json())
             .then((data) => {
-              // Di dalam private/login.html
               if (data.success) {
                 localStorage.setItem("isAdminLoggedIn", "true");
                 window.location.href = "/dashboard-panel";
@@ -65,7 +165,14 @@
                 const msg = document.getElementById("errorMsg");
                 msg.style.display = "block";
                 msg.innerText = "Username atau Password Salah!";
+                btn.innerText = originalText;
+                btn.disabled = false;
               }
+            })
+            .catch((err) => {
+              console.error(err);
+              btn.innerText = originalText;
+              btn.disabled = false;
             });
         });
     </script>

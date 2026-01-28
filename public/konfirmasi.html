@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Konfirmasi Data - Kemenag Siak</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="main-wrapper">
+      <div class="header-card">
+        <img
+          src="image/logo.png"
+          alt="Logo Kemenag"
+          class="logo"
+          onerror="this.style.display = 'none'"
+        />
+        <div class="header-title">
+          BUKU TAMU KANTOR KEMENTERIAN<br />
+          AGAMA KABUPATEN SIAK
+        </div>
+        <div class="header-subtitle">
+          Silahkan periksa kembali data Anda sebelum dikirim
+        </div>
+      </div>
+
+      <div class="form-card">
+        <div id="data-container">
+          <div class="confirm-data">
+            <span class="confirm-label">Nama lengkap</span>
+            <div id="review_nama" class="confirm-value">-</div>
+          </div>
+
+          <div class="confirm-data">
+            <span class="confirm-label">Alamat lengkap</span>
+            <div id="review_alamat" class="confirm-value">-</div>
+          </div>
+
+          <div class="confirm-data">
+            <span class="confirm-label">Jenis kelamin</span>
+            <div id="review_jk" class="confirm-value">-</div>
+          </div>
+
+          <div class="confirm-data">
+            <span class="confirm-label">Tujuan keperluan</span>
+            <div id="review_tujuan" class="confirm-value">-</div>
+          </div>
+
+          <div class="confirm-data">
+            <span class="confirm-label">Uraian keperluan</span>
+            <div id="review_uraian" class="confirm-value">-</div>
+          </div>
+
+          <div class="confirm-data" style="border-bottom: none">
+            <span class="confirm-label">No Hp/Wa</span>
+            <div id="review_nohp" class="confirm-value">-</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 25px">
+          <button id="btnFinalSubmit" onclick="kirimDataFinal()">
+            Ya, Data sudah benar
+          </button>
+
+          <button onclick="kembaliKeForm()" class="btn-ubah">Ubah Data</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // 1. SAAT HALAMAN DIBUKA: AMBIL DATA DARI SESSION STORAGE
+      const dataTamu = JSON.parse(sessionStorage.getItem("tempTamu"));
+
+      // Jika tidak ada data (user coba akses langsung url ini), lempar balik ke form
+      if (!dataTamu) {
+        alert("Tidak ada data untuk dikonfirmasi.");
+        window.location.href = "form.html";
+      } else {
+        // Tampilkan Data
+        document.getElementById("review_nama").innerText = dataTamu.nama;
+        document.getElementById("review_alamat").innerText = dataTamu.alamat;
+        document.getElementById("review_nohp").innerText = dataTamu.no_hp;
+        document.getElementById("review_jk").innerText = dataTamu.jenis_kelamin;
+        document.getElementById("review_tujuan").innerText = dataTamu.tujuan;
+        document.getElementById("review_uraian").innerText = dataTamu.uraian;
+      }
+
+      // 2. FUNGSI UBAH DATA (KEMBALI)
+      function kembaliKeForm() {
+        // Kembali ke form.html, data masih ada di sessionStorage untuk di-isi otomatis
+        window.location.href = "form.html";
+      }
+
+      // 3. FUNGSI KIRIM (FINAL)
+      function kirimDataFinal() {
+        const btn = document.getElementById("btnFinalSubmit");
+        btn.innerText = "Mengirim...";
+        btn.disabled = true;
+        // Nonaktifkan juga tombol ubah agar tidak diklik saat proses
+        document.querySelector(".btn-ubah").disabled = true;
+
+        fetch("/api/tamu", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(dataTamu), // Kirim data yang dari storage
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.error) throw new Error(data.error);
+
+            // Hapus data sementara agar bersih
+            sessionStorage.removeItem("tempTamu");
+
+            // Pindah ke Halaman Sukses
+            window.location.href = "sukses.html";
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("Gagal mengirim data. Cek koneksi server.");
+            btn.innerText = "Ya, Data sudah benar";
+            btn.disabled = false;
+            document.querySelector(".btn-ubah").disabled = false;
+          });
+      }
+    </script>
+  </body>
+</html>

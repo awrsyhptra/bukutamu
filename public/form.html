@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
@@ -62,12 +62,13 @@
           <div class="form-group">
             <label for="tujuan">Tujuan keperluan</label>
             <select id="tujuan" name="tujuan" required>
-              <option value="">Pilih</option>
-              <option value="Bertemu Pimpinan">Bertemu Pimpinan</option>
-              <option value="Mengirim Dokumen">Mengirim Dokumen</option>
-              <option value="Konsultasi">Konsultasi</option>
-              <option value="Rapat">Rapat</option>
-              <option value="Lainnya">Lainnya</option>
+              <option value="">-- Pilih Tujuan --</option>
+              <option value="Kepala Kantor">Kepala Kantor</option>
+              <option value="Subbag Tata Usaha">Subbag Tata Usaha</option>
+              <option value="Seksi Pendidikan Islam">Seksi Pendidikan Islam</option>
+              <option value="Seksi Bimas Islam">Seksi Bimas Islam</option>
+              <option value="Penyelenggara Syariah">Penyelenggara Syariah</option>
+              <option value="Penyelenggara Kristen">Penyelenggara Kristen</option>
             </select>
           </div>
 
@@ -89,23 +90,41 @@
     </div>
 
     <script>
+      // --- BAGIAN 1: CEK DATA (Untuk Fitur "Edit Data") ---
+      document.addEventListener("DOMContentLoaded", () => {
+        const savedData = sessionStorage.getItem("tempTamu");
+        if (savedData) {
+          const data = JSON.parse(savedData);
+
+          // Isi ulang form secara otomatis
+          document.getElementById("nama").value = data.nama || "";
+          document.getElementById("alamat").value = data.alamat || "";
+          document.getElementById("nohp").value = data.no_hp || "";
+          document.getElementById("tujuan").value = data.tujuan || "";
+          document.getElementById("uraian").value = data.uraian || "";
+
+          // Isi ulang radio button
+          if (data.jenis_kelamin) {
+            const radio = document.querySelector(
+              `input[name="jenis_kelamin"][value="${data.jenis_kelamin}"]`,
+            );
+            if (radio) radio.checked = true;
+          }
+        }
+      });
+
+      // --- BAGIAN 2: SAAT TOMBOL DITEKAN ---
       document
         .getElementById("guestForm")
         .addEventListener("submit", function (e) {
           e.preventDefault();
 
-          // 1. Efek UI Loading (Tombol berubah jadi "Mengirim...")
-          const btn = document.querySelector("button");
-          const originalText = btn.innerText;
-          btn.innerText = "Mengirim...";
-          btn.disabled = true;
-
-          // 2. Ambil data dari input form
+          // 1. Ambil data dari input form
           const nama = document.getElementById("nama").value;
           const alamat = document.getElementById("alamat").value;
           const tujuan = document.getElementById("tujuan").value;
           const uraian = document.getElementById("uraian").value;
-          const nohp = document.getElementById("nohp").value; // Data No HP diambil
+          const nohp = document.getElementById("nohp").value;
 
           // Ambil data Radio Button
           const jkElement = document.querySelector(
@@ -116,43 +135,24 @@
           // Validasi Jenis Kelamin
           if (!jenisKelamin) {
             alert("Mohon pilih jenis kelamin.");
-            btn.innerText = originalText;
-            btn.disabled = false;
             return;
           }
 
-          // 3. Kirim data ke Server
-          fetch("/api/tamu", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              nama: nama,
-              alamat: alamat,
-              jenis_kelamin: jenisKelamin,
-              tujuan: tujuan,
-              uraian: uraian,
-              no_hp: nohp, // Mengirim data No HP ke backend
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.error) {
-                throw new Error(data.error); // Tangkap error jika ada dari server
-              }
+          // 2. Bungkus data jadi satu objek
+          const dataTamu = {
+            nama: nama,
+            alamat: alamat,
+            jenis_kelamin: jenisKelamin,
+            tujuan: tujuan,
+            uraian: uraian,
+            no_hp: nohp,
+          };
 
-              // --- UPDATE UTAMA: REDIRECT ---
-              // Jika berhasil, pindah ke halaman sukses
-              window.location.href = "sukses.html";
-              // ------------------------------
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-              alert("Gagal mengirim data. Pastikan server berjalan.");
+          // 3. SIMPAN KE STORAGE BROWSER (Sementara)
+          sessionStorage.setItem("tempTamu", JSON.stringify(dataTamu));
 
-              // Kembalikan tombol agar bisa ditekan lagi
-              btn.innerText = originalText;
-              btn.disabled = false;
-            });
+          // 4. PINDAH KE HALAMAN KONFIRMASI
+          window.location.href = "konfirmasi.html";
         });
     </script>
   </body>

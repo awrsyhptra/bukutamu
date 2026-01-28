@@ -1,0 +1,332 @@
+/* public/css/admin.css */
+
+/* 1. RESET & DASAR (SERBA PUTIH/ABU) */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f9fa; /* Abu-abu muda bersih */
+  margin: 0;
+  padding: 0;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 2. NAVBAR (MENU ATAS) */
+.admin-header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.brand-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-section img {
+  width: 32px;
+  height: auto;
+}
+
+.brand-text h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.brand-text p {
+  margin: 0;
+  font-size: 11px;
+  color: #6b7280;
+}
+
+.btn-logout-header {
+  text-decoration: none;
+  color: #4b5563;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.btn-logout-header:hover {
+  color: #dc2626;
+}
+
+.header-tabs {
+  display: flex;
+  gap: 30px;
+  margin-top: 2px;
+}
+
+.tab-link {
+  text-decoration: none;
+  color: #6b7280;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.tab-link.active {
+  color: #00b050; /* Hijau Kemenag */
+  border-bottom-color: #00b050;
+}
+
+/* 3. KONTEN UTAMA */
+.admin-main {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 30px;
+}
+
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 20px;
+}
+
+.page-heading h1 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.page-heading p {
+  color: #6b7280;
+  margin: 0;
+  font-size: 13px;
+}
+
+.btn-export-excel {
+  background-color: #00b050;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s;
+}
+
+.btn-export-excel:hover {
+  background-color: #008a3e;
+}
+
+/* 4. FILTER BAR */
+.filter-container {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.search-wrapper {
+  flex: 1;
+  position: relative;
+}
+
+.search-wrapper input {
+  width: 100%;
+  padding: 9px 10px 9px 36px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 13px;
+  color: #374151;
+  background: #fff;
+}
+
+.search-icon-svg {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  width: 15px;
+}
+
+.filter-select {
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #374151;
+  font-size: 13px;
+  cursor: pointer;
+  min-width: 120px;
+}
+
+/* 5. TABEL CLEAN STYLE */
+.table-wrapper {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  overflow-x: auto;
+}
+
+.clean-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+
+.clean-table th {
+  background-color: #f9fafb;
+  color: #6b7280;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.clean-table td {
+  padding: 14px 20px;
+  border-bottom: 1px solid #f3f4f6;
+  color: #1f2937;
+  font-size: 13.5px;
+  vertical-align: middle;
+}
+
+.clean-table tr:hover td {
+  background-color: #f9fafb;
+}
+
+.clean-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* 6. BADGES & TOMBOL HAPUS */
+.badge-circle {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.bg-blue-light {
+  background: #dbeafe;
+  color: #1e40af;
+}
+.bg-pink-light {
+  background: #fce7f3;
+  color: #9d174d;
+}
+
+.badge-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.bg-green-soft {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.btn-trash {
+  background: white;
+  border: 1px solid #fee2e2;
+  color: #ef4444;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-trash:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* --- TAMBAHAN: POPUP FILTER TUJUAN --- */
+.filter-btn-wrapper {
+  position: relative; /* Agar popup muncul tepat di bawah tombol */
+}
+
+.filter-popup {
+  display: none; /* Tersembunyi default */
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 220px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 100;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.filter-popup.show {
+  display: block; /* Muncul saat aktif */
+}
+
+.filter-option {
+  padding: 10px 15px;
+  font-size: 13px;
+  color: #333;
+  cursor: pointer;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background 0.2s;
+}
+
+.filter-option:last-child {
+  border-bottom: none;
+}
+
+.filter-option:hover {
+  background-color: #f9f9f9;
+  color: #00b050;
+}
+
+.filter-option.active {
+  background-color: #e6f7ed; /* Highlight hijau muda jika dipilih */
+  font-weight: bold;
+  color: #00b050;
+}
